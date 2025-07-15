@@ -8,6 +8,8 @@ Para cada algoritmo do módulo de busca foi feito uma classe, com atributos nece
 
 Bom, o método `busca()`, contém a lógica do algoritmo e o método `run()`, só serve para organizar o programa e chamar o método de `busca` com a entrada do usuário.
 
+Obs.: Os algoritmos realizam a mesma tarefa com diferentes entradas, mas o programa irá sugerir uma entrada em específico, e essa entrada será necessária para dar prosseguimento.
+
 ### Complexidade
 
 **Busca Sequencial**: tem uma complexidade de O(1) no melhor caso quando o elemento é o primeiro da estrutura usada para procura, mas chega a O(n) em seu pior caso, quando o elemento é o último.
