@@ -1,10 +1,10 @@
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <string>
-#include <vector>
 #include "busca.hpp"
 #include "../utils/utils.hpp"
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 //// Etapa da busca sequencial
 
@@ -47,6 +47,14 @@ void BuscaSequencial::run() {
     std::cout << std::endl;
 
     indice_encontrado = busca(log_caotico, input);
+
+    if (input != "sector_index_magrathea.ref" && indice_encontrado) {
+      pretty_print(
+          "\nEssa entrada pode não ter o efeito desejado, talvez tenha que usar o nome do arquivo \
+que Ford sugeriu.",
+          20);
+      indice_encontrado = false;
+    }
   }
 
   pretty_print(
@@ -95,15 +103,15 @@ bool BuscaSequencial::busca(std::vector<std::string> arquivos,
 
 BuscaBinaria::BuscaBinaria()
     : setorArq({{101, "Sistema Estelar Frogstar"},
-                  {113, "Constelação do Chapéu de Pano"},
-                  {242, "Região do Grande Cavalo-Marinho Espacial"},
-                  {355, "Nebulosa da Indiferença Total"},
-                  {499, "Quadrante Algoliano do Sol Nascente"},
-                  {610, "Vórtice de Santraginus V"},
-                  {734, "Confins de Damogran"},
-                  {877, "Ponto de Acesso de Magrathea"}, // <- O ALVO
-                  {921, "Territórios de Squornshellous Zeta"},
-                  {998, "Anomalia Espaço-Temporal do Fim do Universo"}}),
+                {113, "Constelação do Chapéu de Pano"},
+                {242, "Região do Grande Cavalo-Marinho Espacial"},
+                {355, "Nebulosa da Indiferença Total"},
+                {499, "Quadrante Algoliano do Sol Nascente"},
+                {610, "Vórtice de Santraginus V"},
+                {734, "Confins de Damogran"},
+                {877, "Ponto de Acesso de Magrathea"}, // <- O ALVO
+                {921, "Territórios de Squornshellous Zeta"},
+                {998, "Anomalia Espaço-Temporal do Fim do Universo"}}),
       narrativa(
           "Sucesso! Ao abrir o sector_index_magrathea.ref, você encontra uma lista \
 gigantesca de setores galácticos, cada um com um código numérico único. Felizmente, \
@@ -115,7 +123,7 @@ usar um método mais eficiente.\n") {}
 
 void BuscaBinaria::run() {
   int input;
-  bool sector_encontrado = false;
+  bool setor_encontrado = false;
 
   pretty_print(GREEN + "Navegando pelos Setores Estelares (Busca Binária) \n" +
                    RESET,
@@ -123,7 +131,7 @@ void BuscaBinaria::run() {
 
   pretty_print(narrativa, 20);
 
-  while (!sector_encontrado) {
+  while (!setor_encontrado) {
     std::cout << CYAN
               << "Digite o código do setor a ser procurado dentro do arquivo "
                  "de índices"
@@ -133,7 +141,15 @@ void BuscaBinaria::run() {
     std::cin.get();
     std::cout << std::endl;
 
-    sector_encontrado = busca(setorArq, input, 0, setorArq.size());
+    setor_encontrado = busca(setorArq, input, 0, setorArq.size());
+
+    if (input != 877 && setor_encontrado) {
+      pretty_print(
+          "\nEsse id pode não ter o efeito desejado, talvez tenha que u"
+          "sar o id sugerido por Ford.",
+          0);
+      setor_encontrado = false;
+    }
   }
 
   pretty_print(GREEN +
@@ -156,6 +172,8 @@ void BuscaBinaria::run() {
 bool BuscaBinaria::busca(std::vector<SetorInfo> setores, int id_setor,
                          int ind_esq, int ind_dir) {
   if (ind_esq > ind_dir) {
+    pretty_print(
+        CYAN + "Não foi achado nenhum setor com este id!\n" + RESET, 20);
     return false;
   }
 
@@ -202,7 +220,7 @@ com o marcador " +
 
 void BuscaRabinKarp::run() {
   std::string input;
-  bool text_encontrado = false;
+  bool texto_encontrado = false;
 
   pretty_print(
       GREEN + "O Diário de Bordo Perdido (Busca em Texto - Rabin Karp) \n" +
@@ -211,7 +229,7 @@ void BuscaRabinKarp::run() {
 
   pretty_print(narrativa, 20);
 
-  while (!text_encontrado) {
+  while (!texto_encontrado) {
     std::cout << CYAN
               << "Digite algum bloco de texto para ser procurado no arquivo "
                  "encontrado"
@@ -221,7 +239,15 @@ void BuscaRabinKarp::run() {
     std::cin.get();
     std::cout << std::endl;
 
-    text_encontrado = busca(arquivo_log, input, 256, 101);
+    texto_encontrado = busca(arquivo_log, input, 256, 101);
+
+    if ((input != "COORDS" && input != "COORDS::") && texto_encontrado) {
+      pretty_print(
+          "\nEsse texto pode não ter o efeito desejado, talvez tenha que usar a convenção \
+sugerida por Trillian.",
+          20);
+      texto_encontrado = false;
+    }
   }
 
   pretty_print(GREEN +
@@ -267,13 +293,15 @@ bool BuscaRabinKarp::busca(std::string texto, std::string subtexto, int d,
   for (int s = 0; s < (n - m + 1); s++) {
     if (s % 20 == 0) {
       std::stringstream res;
-      res << MAGENTA << std::setprecision(2) << ((float)s / (float)n * 100)  << "% do texto já foi vasculhado." << RESET;
+      res << MAGENTA << std::setprecision(2) << ((float)s / (float)n * 100)
+          << "% do texto já foi vasculhado." << RESET;
       pretty_print(res.str(), 10);
     }
 
     if (p == t) {
       if (subtexto == texto.substr(s, m)) {
-        std::string res_final = "\n" + GREEN + "PARTE DO TEXTO FOI ENCONTRADO" + RESET;
+        std::string res_final =
+            "\n" + GREEN + "PARTE DO TEXTO FOI ENCONTRADO" + RESET;
         pretty_print(res_final, 20);
 
         pretty_print(
