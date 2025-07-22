@@ -90,8 +90,12 @@ a mensagem, ela será menor, mais rápida de enviar e, sem o dicionário de desc
       // etapa: compressao
       CompHuffman cHuff;
       // etapa: hashing
+      Hashing hashing;
 
       cHuff.run();
+      std::cout << std::endl << std::endl;
+
+      hashing.run();
       std::cout << std::endl << std::endl;
 
       pretty_print(
