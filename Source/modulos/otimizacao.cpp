@@ -1,17 +1,10 @@
 #include "otimizacao.hpp"
 #include "../utils/utils.hpp"
 #include <bits/stdc++.h>
-#include <bitset>
-#include <iomanip>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
-bool cmp(const std::pair<char, int> &a, const std::pair<char, int> &b) {
+using namespace std;
+
+bool cmp(const pair<char, int> &a, const pair<char, int> &b) {
   if (a.second == b.second) {
     return (int)a.first > (int)b.first;
   }
@@ -19,45 +12,45 @@ bool cmp(const std::pair<char, int> &a, const std::pair<char, int> &b) {
   return a.second < b.second;
 }
 
-void CompHuffman::montarArvore(std::string texto) {
-  std::map<char, int> letras_freq;
+void CompHuffman::montarArvore(string texto) {
+  map<char, int> letras_freq;
 
   // calculando a frequência das letras
   for (char c : texto) {
     try {
       letras_freq.at(c) += 1;
-    } catch (const std::out_of_range &ex) {
+    } catch (const out_of_range &ex) {
       letras_freq[c] = 1;
     }
   }
 
-  std::vector<std::pair<char, int>> freqs;
+  vector<pair<char, int>> freqs;
 
   for (auto &elemento : letras_freq) {
     freqs.push_back(elemento);
   }
 
-  std::sort(freqs.begin(), freqs.end(), cmp);
-  std::vector<std::unique_ptr<ArvoreBinaria>> arvore_freqs;
+  sort(freqs.begin(), freqs.end(), cmp);
+  vector<unique_ptr<ArvoreBinaria>> arvore_freqs;
 
   // criando um vetor de arvores
   for (auto &elemento : freqs) {
-    auto b = std::make_unique<ArvoreBinaria>();
+    auto b = make_unique<ArvoreBinaria>();
     b->valor = elemento.second;
     b->raiz = elemento.first;
-    arvore_freqs.push_back(std::move(b));
+    arvore_freqs.push_back(move(b));
   }
 
   // ordenando e juntando essas arvores
   while (arvore_freqs.size() > 1) {
-    std::unique_ptr<ArvoreBinaria> filha_esquerda = std::move(arvore_freqs[0]);
-    std::unique_ptr<ArvoreBinaria> filha_direita = std::move(arvore_freqs[1]);
+    unique_ptr<ArvoreBinaria> filha_esquerda = move(arvore_freqs[0]);
+    unique_ptr<ArvoreBinaria> filha_direita = move(arvore_freqs[1]);
 
-    auto no = std::make_unique<ArvoreBinaria>();
+    auto no = make_unique<ArvoreBinaria>();
     no->valor = filha_esquerda->valor + filha_direita->valor;
     no->raiz = '\0';
-    no->esquerda = std::move(filha_esquerda);
-    no->direita = std::move(filha_direita);
+    no->esquerda = move(filha_esquerda);
+    no->direita = move(filha_direita);
 
     arvore_freqs.erase(arvore_freqs.begin());
     arvore_freqs.erase(arvore_freqs.begin());
@@ -65,24 +58,24 @@ void CompHuffman::montarArvore(std::string texto) {
     bool inserido = false;
     for (size_t i = 0; i < arvore_freqs.size(); ++i) {
       if (arvore_freqs[i]->valor > no->valor) {
-        arvore_freqs.insert(arvore_freqs.begin() + i, std::move(no));
+        arvore_freqs.insert(arvore_freqs.begin() + i, move(no));
         inserido = true;
         break;
       }
     }
 
     if (!inserido) {
-      arvore_freqs.push_back(std::move(no));
+      arvore_freqs.push_back(move(no));
     }
   }
 
-  this->arvoreHuffman = std::move(arvore_freqs[0]);
+  this->arvoreHuffman = move(arvore_freqs[0]);
 };
 
-void CompHuffman::codificarArvore(ArvoreBinaria &a, std::string &texto) {
+void CompHuffman::codificarArvore(ArvoreBinaria &a, string &texto) {
   if (!a.esquerda && !a.direita) {
     texto += "1";
-    texto += std::bitset<8>((int)a.raiz).to_string();
+    texto += bitset<8>((int)a.raiz).to_string();
     return;
   }
 
@@ -92,8 +85,8 @@ void CompHuffman::codificarArvore(ArvoreBinaria &a, std::string &texto) {
   codificarArvore(*a.direita, texto);
 }
 
-std::unique_ptr<CompHuffman::ArvoreBinaria>
-CompHuffman::decodificarArvore(std::string texto, size_t &indice) {
+unique_ptr<CompHuffman::ArvoreBinaria>
+CompHuffman::decodificarArvore(string texto, size_t &indice) {
   char bit = texto[indice];
   indice++;
 
@@ -105,14 +98,14 @@ CompHuffman::decodificarArvore(std::string texto, size_t &indice) {
     }
     indice += 8;
 
-    std::unique_ptr<ArvoreBinaria> b = std::make_unique<ArvoreBinaria>();
+    unique_ptr<ArvoreBinaria> b = make_unique<ArvoreBinaria>();
     b->raiz = (char)num;
     b->esquerda = nullptr;
     b->direita = nullptr;
 
     return b;
   } else {
-    std::unique_ptr<ArvoreBinaria> b = std::make_unique<ArvoreBinaria>();
+    unique_ptr<ArvoreBinaria> b = make_unique<ArvoreBinaria>();
     b->raiz = '\0';
 
     b->esquerda = decodificarArvore(texto, indice);
@@ -123,8 +116,8 @@ CompHuffman::decodificarArvore(std::string texto, size_t &indice) {
 }
 
 void CompHuffman::montarTabelaCodigos(
-    ArvoreBinaria &a, std::string codigoAtual,
-    std::map<char, std::string> &tabelaCodigos) {
+    ArvoreBinaria &a, string codigoAtual,
+    map<char, string> &tabelaCodigos) {
   if (a.esquerda == nullptr && a.direita == nullptr) {
     tabelaCodigos[a.raiz] = codigoAtual;
   }
@@ -137,9 +130,9 @@ void CompHuffman::montarTabelaCodigos(
   }
 }
 
-void CompHuffman::codificarTexto(ArvoreBinaria &a, std::string &texto,
-                                 std::string &texto_codificado) {
-  std::map<char, std::string> codigos;
+void CompHuffman::codificarTexto(ArvoreBinaria &a, string &texto,
+                                 string &texto_codificado) {
+  map<char, string> codigos;
   texto_codificado = "";
 
   montarTabelaCodigos(*this->arvoreHuffman, "", codigos);
@@ -149,8 +142,8 @@ void CompHuffman::codificarTexto(ArvoreBinaria &a, std::string &texto,
   }
 }
 
-void CompHuffman::decodificarTexto(ArvoreBinaria &a, std::string &texto) {
-  std::string bits_codificados = texto;
+void CompHuffman::decodificarTexto(ArvoreBinaria &a, string &texto) {
+  string bits_codificados = texto;
   texto.clear();
 
   ArvoreBinaria *no_atual = &a;
@@ -188,7 +181,7 @@ construindo uma árvore de Huffman para gerar códigos de bits de tamanho variá
 }
 
 void CompHuffman::run() {
-  std::string input;
+  string input;
   bool mensagem_esperada_input = false;
 
   pretty_print(GREEN + "O Código de Huffman (Compressão de Dados) \n" + RESET,
@@ -197,10 +190,10 @@ void CompHuffman::run() {
   pretty_print(narrativa, 20);
 
   while (!mensagem_esperada_input) {
-    std::cout << CYAN << "Digite o texto a ser comprimido" << RESET << std::endl
+    cout << CYAN << "Digite o texto a ser comprimido" << RESET << endl
               << "> ";
-    std::getline(std::cin, input);
-    std::cout << std::endl;
+    getline(cin, input);
+    cout << endl;
 
     comprimir(input);
 
@@ -232,35 +225,35 @@ que querendo ou não ocupa algum espaço, e em mensagens pequenas, o algoritmo p
   wait_enter();
 };
 
-void CompHuffman::comprimir(std::string texto) {
-  std::string texto_codificado;
-  std::string texto_arvore;
-  std::stringstream res;
+void CompHuffman::comprimir(string texto) {
+  string texto_codificado;
+  string texto_arvore;
+  stringstream res;
   montarArvore(texto);
 
   codificarTexto(*this->arvoreHuffman, texto, texto_codificado);
   codificarArvore(*this->arvoreHuffman, texto_arvore);
 
   res << CYAN << "Sequência de bits depois da compressão -> " << RESET
-      << texto_codificado << std::endl;
+      << texto_codificado << endl;
 
-  res << std::endl
+  res << endl
       << CYAN << "Sequência de bits da árvore codificada -> " << RESET
-      << texto_arvore << std::endl;
+      << texto_arvore << endl;
 
   res << YELLOW << "O texto original tinha " << texto.length() * 8
       << "bits e o texto comprimido \
 tem " << texto_codificado.length()
-      << "bits sem a árvore de decodificação." << std::endl;
-  res << "Tendo uma redução de " << std::setprecision(2)
+      << "bits sem a árvore de decodificação." << endl;
+  res << "Tendo uma redução de " << setprecision(2)
       << ((float)texto_codificado.length() / (float)(texto.length() * 8)) * 100
       << "% no tamanho da mensagem.\n" + RESET;
 
   pretty_print(res.str(), 5);
 };
 
-void CompHuffman::descomprimir(std::string texto, int tree_size) {
-  std::string texto_decodificado =
+void CompHuffman::descomprimir(string texto, int tree_size) {
+  string texto_decodificado =
       texto.substr(tree_size, texto.length() - tree_size);
 
   size_t ind = 0;
@@ -268,7 +261,7 @@ void CompHuffman::descomprimir(std::string texto, int tree_size) {
 
   decodificarTexto(*this->arvoreHuffman, texto_decodificado);
 
-  std::cout << texto_decodificado << std::endl;
+  cout << texto_decodificado << endl;
 };
 
 ////// HASHING
@@ -344,7 +337,7 @@ void Hashing::run() {
              "Consertar o dispensador de petiscos que insulta o usuário"});
   inserirEnlacLimite((Item){"senha_wifi", "toalha123"});
 
-  std::string input;
+  string input;
   bool mensagem_esperada_input = false;
   bool msg_original_input = false;
   bool msg_comprimida_input = false;
@@ -356,13 +349,13 @@ void Hashing::run() {
   pretty_print(narrativa, 20);
 
   while (!msg_original_input) {
-    std::cout << CYAN << "INSERINDO O TEXTO DA CHAVE: msg_original_magrathea"
-              << RESET << std::endl;
-    std::cout << CYAN << "Digite o texto da mensagem original da fase anterior"
-              << RESET << std::endl
+    cout << CYAN << "INSERINDO O TEXTO DA CHAVE: msg_original_magrathea"
+              << RESET << endl;
+    cout << CYAN << "Digite o texto da mensagem original da fase anterior"
+              << RESET << endl
               << "> ";
-    std::getline(std::cin, input);
-    std::cout << std::endl;
+    getline(cin, input);
+    cout << endl;
 
     if (input == mensagem_esperada) {
       msg_original_input = true;
@@ -379,14 +372,14 @@ por Zaphod.",
   }
 
   while (!msg_comprimida_input) {
-    std::cout << CYAN << "INSERINDO O TEXTO DA CHAVE: msg_comprimida_bits"
-              << RESET << std::endl;
-    std::cout << CYAN
+    cout << CYAN << "INSERINDO O TEXTO DA CHAVE: msg_comprimida_bits"
+              << RESET << endl;
+    cout << CYAN
               << "Digite os bits da mensagem comprimida da fase anterior"
-              << RESET << std::endl
+              << RESET << endl
               << "> ";
-    std::getline(std::cin, input);
-    std::cout << std::endl;
+    getline(cin, input);
+    cout << endl;
 
     if (input == mensagem_cod_esperada) {
       msg_comprimida_input = true;
@@ -403,14 +396,14 @@ que representa a mensagem da questão anterior",
   }
 
   while (!arvore_decodificada_input) {
-    std::cout << CYAN
+    cout << CYAN
               << "INSERINDO O TEXTO DA CHAVE: arvore_decodificacao_huffman"
-              << RESET << std::endl;
-    std::cout << CYAN << "Digite os bits da árvore gerada na fase anterior"
-              << RESET << std::endl
+              << RESET << endl;
+    cout << CYAN << "Digite os bits da árvore gerada na fase anterior"
+              << RESET << endl
               << "> ";
-    std::getline(std::cin, input);
-    std::cout << std::endl;
+    getline(cin, input);
+    cout << endl;
 
     if (input == arvore_esperada) {
       arvore_decodificada_input = true;
@@ -429,40 +422,40 @@ que representa a árvore de Huffman da questão anterior",
   pretty_print(CYAN + "Tabelas em seus estados atuais: \n\n" + RESET, 20);
 
   mostrarTabelaMeioQuadrado();
-  std::cout << std::endl << std::endl;
+  cout << endl << endl;
   mostrarTabelaEnlacLimite();
-  std::cout << std::endl << std::endl;
+  cout << endl << endl;
 
   Item item;
   while (input != "q") {
-    std::cout << CYAN
+    cout << CYAN
               << "Digite alguma chave para procurar seu valor, e 'q' para "
                  "prosseguir..."
-              << RESET << std::endl
+              << RESET << endl
               << "> ";
-    std::getline(std::cin, input);
-    std::cout << std::endl;
+    getline(cin, input);
+    cout << endl;
 
     if (input != "q") {
 
       if (buscarMeioQuadrado(input, item)) {
-        std::cout << GREEN << "Tabela Meio Quadrado: " << RESET << item.desc
-                  << std::endl;
+        cout << GREEN << "Tabela Meio Quadrado: " << RESET << item.desc
+                  << endl;
       } else {
-        std::cout << GREEN << "Tabela Meio Quadrado: " << RESET
-                  << "Chave não existe" << std::endl;
+        cout << GREEN << "Tabela Meio Quadrado: " << RESET
+                  << "Chave não existe" << endl;
       }
 
       if (buscarEnlacLimite(input, item)) {
-        std::cout << GREEN << "Tabela Enlaçamento Limite: " << RESET
-                  << item.desc << std::endl;
+        cout << GREEN << "Tabela Enlaçamento Limite: " << RESET
+                  << item.desc << endl;
       } else {
-        std::cout << GREEN << "Tabela Enlaçamento Limite: " << RESET
-                  << "Chave não existe" << std::endl;
+        cout << GREEN << "Tabela Enlaçamento Limite: " << RESET
+                  << "Chave não existe" << endl;
       }
     }
 
-    std::cout << std::endl << std::endl;
+    cout << endl << endl;
   }
 
   pretty_print(
@@ -488,13 +481,13 @@ void Hashing::mostrarTabelaMeioQuadrado() {
   int i = 0;
   int lot = 0;
 
-  std::cout << "Tabela Meio Quadrado:" << std::endl;
+  cout << "Tabela Meio Quadrado:" << endl;
 
-  for (std::vector vet : tabelaMeioQuadrado) {
+  for (vector vet : tabelaMeioQuadrado) {
     if (!vet.empty()) {
       for (Item &it : vet) {
-        std::cout << GREEN << it.chave << ": " << RESET << it.desc << RED
-                  << " (" << i << ")" << RESET << std::endl;
+        cout << GREEN << it.chave << ": " << RESET << it.desc << RED
+                  << " (" << i << ")" << RESET << endl;
       }
       lot++;
     }
@@ -502,7 +495,7 @@ void Hashing::mostrarTabelaMeioQuadrado() {
   }
 
   if (lot == 0) {
-    std::cout << "Tabela Meio Quadrado vazia\n" << std::endl;
+    cout << "Tabela Meio Quadrado vazia\n" << endl;
   }
 }
 
@@ -510,13 +503,13 @@ void Hashing::mostrarTabelaEnlacLimite() {
   int i = 0;
   int lot = 0;
 
-  std::cout << "Tabela Enlacamento Limite:" << std::endl;
+  cout << "Tabela Enlacamento Limite:" << endl;
 
-  for (std::vector vet : tabelaEnlacLimite) {
+  for (vector vet : tabelaEnlacLimite) {
     if (!vet.empty()) {
       for (Item &it : vet) {
-        std::cout << GREEN << it.chave << ": " << RESET << it.desc << RED
-                  << " (" << i << ")" << RESET << std::endl;
+        cout << GREEN << it.chave << ": " << RESET << it.desc << RED
+                  << " (" << i << ")" << RESET << endl;
       }
       lot++;
     }
@@ -524,11 +517,11 @@ void Hashing::mostrarTabelaEnlacLimite() {
   }
 
   if (lot == 0) {
-    std::cout << "Tabela Enlacamento Limite vazia\n" << std::endl;
+    cout << "Tabela Enlacamento Limite vazia\n" << endl;
   }
 }
 
-unsigned long Hashing::stringParaIntChave(std::string chave_string) {
+unsigned long Hashing::stringParaIntChave(string chave_string) {
   unsigned long hash = 5381;
 
   for (char c : chave_string) {
@@ -548,7 +541,7 @@ int Hashing::funcaoMeioQuadrado(int chave, int digitos_tabela) {
   }
 
   for (int i = 0; i < digitos_tabela; i++) {
-    meio += (quadrado % 10) * std::pow(10, i);
+    meio += (quadrado % 10) * pow(10, i);
     quadrado /= 10;
   }
 
@@ -560,12 +553,12 @@ bool Hashing::inserirMeioQuadrado(Item item) {
   chave = funcaoMeioQuadrado(chave, 2);
 
   if (tabelaMeioQuadrado[chave].empty()) {
-    tabelaMeioQuadrado[chave].push_back(std::move(item));
+    tabelaMeioQuadrado[chave].push_back(move(item));
 
     return true;
   }
 
-  auto it = std::lower_bound(
+  auto it = lower_bound(
       tabelaMeioQuadrado[chave].begin(), tabelaMeioQuadrado[chave].end(), item,
       [](const Item &a, const Item &b) { return a.chave < b.chave; });
 
@@ -578,7 +571,7 @@ bool Hashing::inserirMeioQuadrado(Item item) {
   return true;
 }
 
-bool Hashing::buscarMeioQuadrado(std::string chave, Item &item) {
+bool Hashing::buscarMeioQuadrado(string chave, Item &item) {
   int chaveCod = stringParaIntChave(chave);
   chaveCod = funcaoMeioQuadrado(chaveCod, 2);
 
@@ -588,7 +581,7 @@ bool Hashing::buscarMeioQuadrado(std::string chave, Item &item) {
 
   for (Item &it : tabelaMeioQuadrado[chaveCod]) {
     if (it.chave == chave) {
-      item = std::move(it);
+      item = move(it);
       return true;
     }
   }
@@ -604,7 +597,7 @@ int Hashing::enlacamentoLimite(int chave, int digitos_tabela) {
     chave *= 10;
   }
 
-  std::string chave_string = std::to_string(chave);
+  string chave_string = to_string(chave);
   int digitosChave = contarDigitos(chave);
   int valor = 0;
 
@@ -633,12 +626,12 @@ bool Hashing::inserirEnlacLimite(Item item) {
   chave = enlacamentoLimite(chave, 2);
 
   if (tabelaEnlacLimite[chave].empty()) {
-    tabelaEnlacLimite[chave].push_back(std::move(item));
+    tabelaEnlacLimite[chave].push_back(move(item));
 
     return true;
   }
 
-  auto it = std::lower_bound(
+  auto it = lower_bound(
       tabelaEnlacLimite[chave].begin(), tabelaEnlacLimite[chave].end(), item,
       [](const Item &a, const Item &b) { return a.chave < b.chave; });
 
@@ -651,7 +644,7 @@ bool Hashing::inserirEnlacLimite(Item item) {
   return true;
 }
 
-bool Hashing::buscarEnlacLimite(std::string chave, Item &item) {
+bool Hashing::buscarEnlacLimite(string chave, Item &item) {
   int chaveCod = stringParaIntChave(chave);
   chaveCod = enlacamentoLimite(chaveCod, 2);
 
@@ -661,7 +654,7 @@ bool Hashing::buscarEnlacLimite(std::string chave, Item &item) {
 
   for (Item &it : tabelaEnlacLimite[chaveCod]) {
     if (it.chave == chave) {
-      item = std::move(it);
+      item = move(it);
       return true;
     }
   }

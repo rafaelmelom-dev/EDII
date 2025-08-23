@@ -1,28 +1,32 @@
 #include "modulos/busca.hpp"
+#include "modulos/grafos.hpp"
 #include "modulos/otimizacao.hpp"
-#include <iostream>
+#include "utils/utils.hpp"
+#include <bits/stdc++.h>
+
+using namespace std;
 
 void menu() {
   int opt;
 
   do {
     clean_screen();
-    std::cout
-        << GREEN
-        << "+++ História Interativa do Guia do Mochileiro dos Algoritmos +++"
-        << RESET << std::endl;
-    std::cout << "[1] Busca de Dados (O guia bagunçado e a busca por Magrathea)"
-              << std::endl;
-    std::cout << "[2] Otimização de Recursos (Sussurros no Vácuo e a Tabela de "
-                 "Dispersão Vogon)"
-              << std::endl;
-    std::cout << "[3] Sair" << std::endl << std::endl;
+    cout << GREEN
+         << "+++ História Interativa do Guia do Mochileiro dos Algoritmos +++"
+         << RESET << endl;
+    cout << "[1] Busca de Dados (O guia bagunçado e a busca por Magrathea)"
+         << endl;
+    cout << "[2] Otimização de Recursos (Sussurros no Vácuo e a Tabela de "
+            "Dispersão Vogon)"
+         << endl;
+    cout << "[3] Grafos (O Labirinto de Asteroides e a Rota para Magrathea)"
+         << endl;
+    cout << "[4] Sair" << endl << endl;
 
-    std::cout << CYAN << "Digite a opção desejada" << RESET << std::endl
-              << "> ";
-    std::cin >> opt;
-    std::cin.get();
-    std::cout << std::endl << std::endl;
+    cout << CYAN << "Digite a opção desejada" << RESET << endl << "> ";
+    cin >> opt;
+    cin.get();
+    cout << endl << endl;
 
     switch (opt) {
     case 1: {
@@ -48,11 +52,11 @@ um planeta que provavelmente nem quer ser encontrado.\n\n",
       // etapa: busca em texto (rabin karp)
       BuscaRabinKarp bRabKarp;
       bSeq.run();
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
       bBin.run();
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
       bRabKarp.run();
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
 
       pretty_print(
           "Ao extrair a string COORDS::{Lat:42.0, Lon:-21.0, Dep:Sub-Etha}, você a entrega a \
@@ -66,7 +70,7 @@ nossas próximas comunicações para não sermos detectados!\".\n\n",
                        RESET,
                    20);
 
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
 
       wait_enter();
       break;
@@ -93,10 +97,10 @@ a mensagem, ela será menor, mais rápida de enviar e, sem o dicionário de desc
       Hashing hashing;
 
       cHuff.run();
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
 
       hashing.run();
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
 
       pretty_print(
           "Ao buscar e exibir com sucesso os dados que você mesmo inseriu, o painel de controle da nave pisca em verde \
@@ -105,23 +109,83 @@ comprimida e sua chave de decodificação são enviadas em uma transmissão ultr
 final é um labirinto de rotas espaciais antigas e fluxos de detritos. Vocês precisarão calcular o caminho mais rápido, mas também considerar \
 paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
           20);
-      pretty_print(CYAN + "Módulo de otimização de dados finalizado com sucesso!!!" +
-                       RESET,
-                   20);
+      pretty_print(
+          CYAN + "Módulo de otimização de dados finalizado com sucesso!!!" +
+              RESET,
+          20);
 
-      std::cout << std::endl << std::endl;
+      cout << endl << endl;
 
       wait_enter();
       break;
     }
-    case 3:
+    case 3: {
+      // Narrativa geral da fase de busca
+      pretty_print(GREEN +
+                       "O Labirinto de Asteroides e a Rota para Magrathea\n\n" +
+                       RESET,
+                   20);
+      pretty_print(
+          "O salto termina abruptamente. Em vez da superfície serena de "
+          "Magrathea, a tela principal da nave exibe um denso e caótico campo "
+          "de asteroides, sistemas estelares instáveis e nebulosas "
+          "traiçoeiras. Zaphod bate no painel. \"O que é isso?! Onde estão "
+          "minhas praias pré-fabricadas e meus oceanos de encomenda?\"Trillian "
+          "analisa os dados. \"Parece que as coordenadas nos levaram para a "
+          "vizinhança de Magrathea, uma região conhecida como 'O Emaranhado de "
+          "Horsehead'. O planeta está blindado, e a única forma de chegar lá é "
+          "navegando por esta rede de rotas espaciais. Pior: o último salto "
+          "parece ter corrompido parcialmente nosso mapa de navegação "
+          "local.\"Ford Prefect abre o mapa estelar no terminal.\"Ela tem "
+          "razão. O mapa é um grafo de pontos de "
+          "interesse—planetas, estações espaciais, anomalias—conectados "
+          "por rotas seguras. Mas algumas rotas óbvias sumiram, e os "
+          "dados de perigo e distância estão uma bagunça. Precisamos "
+          "consertar isso antes de nos movermos.\"\n\n",
+          20);
+
+      // etapa: grafo - manipulacao
+      ReconsGrafo rg;
+      // etapa: grafo - navegando
+      BuscaGrafo bg;
+      // etapa: grafo - avançado
+      AlgGrafos ag;
+
+      //rg.run();
+      cout << endl << endl;
+
+      bg.run();
+      cout << endl << endl;
+
+      ag.run();
+      cout << endl << endl;
+
+      pretty_print("Com a rede de comunicação estabelecida, uma voz antiga e "
+                   "calma ecoa pela ponte: \" Saudações,viajantes.Estivemos "
+                   "esperando.Magrathea desperta.\" Vocês finalmente "
+                   "conseguiram. Zaphod comemora, "
+                   "enquanto Marvin apenas resmunga que agora o trabalho "
+                   "de verdade vai começar. O caminho para os segredos "
+                   "mais profundos da galáxia está aberto, preparando o "
+                   "terreno para os próximos desafios do jogo.\n\n",
+                   20);
+
+      pretty_print(CYAN + "Módulo de grafos finalizado com sucesso!!!" + RESET,
+                   20);
+
+      cout << endl << endl;
+
+      wait_enter();
+      break;
+    }
+    case 4:
       exit(0);
     default:
-      std::cout << "Opção inválida. Tente novamente." << std::endl;
+      cout << "Opção inválida. Tente novamente." << endl;
 
       wait_enter();
     }
-  } while (opt != 3);
+  } while (opt != 4);
 }
 
 int main(int argc, char **argv) {

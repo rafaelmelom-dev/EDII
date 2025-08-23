@@ -1,10 +1,9 @@
 #include "busca.hpp"
 #include "../utils/utils.hpp"
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
+
+using namespace std;
+
 
 //// Etapa da busca sequencial
 
@@ -30,7 +29,7 @@ ter um ponto de partida. Como a lista não tem ordem, a única maneira é verifi
 }
 
 void BuscaSequencial::run() {
-  std::string input;
+  string input;
   bool indice_encontrado = false;
 
   pretty_print(GREEN + "A Pilha de Lixo Digital (Busca Sequencial) \n" + RESET,
@@ -39,12 +38,12 @@ void BuscaSequencial::run() {
   pretty_print(narrativa, 20);
 
   while (!indice_encontrado) {
-    std::cout << CYAN << "Digite o nome do arquivo a ser buscado no log caótico"
-              << RESET << std::endl
+    cout << CYAN << "Digite o nome do arquivo a ser buscado no log caótico"
+              << RESET << endl
               << "> ";
-    std::cin >> input;
-    std::cin.get();
-    std::cout << std::endl;
+    cin >> input;
+    cin.get();
+    cout << endl;
 
     indice_encontrado = busca(log_caotico, input);
 
@@ -73,11 +72,11 @@ por arquivo demora muito tendo uma complexidade de O(n) no pior dos casos!\n" +
   wait_enter();
 }
 
-bool BuscaSequencial::busca(std::vector<std::string> arquivos,
-                            std::string nome_arquivo) {
-  for (std::string log_item : log_caotico) {
+bool BuscaSequencial::busca(vector<string> arquivos,
+                            string nome_arquivo) {
+  for (string log_item : log_caotico) {
     bool found = false;
-    std::string text = "Verificando o arquivo: " + log_item;
+    string text = "Verificando o arquivo: " + log_item;
 
     if (log_item == nome_arquivo) {
       text += GREEN + " ENCONTRADO"; // aqui poderia entrar um retorno do índice
@@ -132,14 +131,14 @@ void BuscaBinaria::run() {
   pretty_print(narrativa, 20);
 
   while (!setor_encontrado) {
-    std::cout << CYAN
+    cout << CYAN
               << "Digite o código do setor a ser procurado dentro do arquivo "
                  "de índices"
-              << RESET << std::endl
+              << RESET << endl
               << "> ";
-    std::cin >> input;
-    std::cin.get();
-    std::cout << std::endl;
+    cin >> input;
+    cin.get();
+    cout << endl;
 
     setor_encontrado = busca(setorArq, input, 0, setorArq.size());
 
@@ -169,7 +168,7 @@ void BuscaBinaria::run() {
   wait_enter();
 }
 
-bool BuscaBinaria::busca(std::vector<SetorInfo> setores, int id_setor,
+bool BuscaBinaria::busca(vector<SetorInfo> setores, int id_setor,
                          int ind_esq, int ind_dir) {
   if (ind_esq > ind_dir) {
     pretty_print(
@@ -179,8 +178,8 @@ bool BuscaBinaria::busca(std::vector<SetorInfo> setores, int id_setor,
 
   int meio = (ind_esq + ind_dir) / 2;
 
-  std::string res =
-      "Verificando o setor: ID: " + std::to_string(setores[meio].id) +
+  string res =
+      "Verificando o setor: ID: " + to_string(setores[meio].id) +
       " - Nome: " + setores[meio].name;
 
   if (setores[meio].id == id_setor) {
@@ -219,7 +218,7 @@ com o marcador " +
           "extrair as coordenadas exatas.\n") {}
 
 void BuscaRabinKarp::run() {
-  std::string input;
+  string input;
   bool texto_encontrado = false;
 
   pretty_print(
@@ -230,14 +229,14 @@ void BuscaRabinKarp::run() {
   pretty_print(narrativa, 20);
 
   while (!texto_encontrado) {
-    std::cout << CYAN
+    cout << CYAN
               << "Digite algum bloco de texto para ser procurado no arquivo "
                  "encontrado"
-              << RESET << std::endl
+              << RESET << endl
               << "> ";
-    std::cin >> input;
-    std::cin.get();
-    std::cout << std::endl;
+    cin >> input;
+    cin.get();
+    cout << endl;
 
     texto_encontrado = busca(arquivo_log, input, 256, 101);
 
@@ -269,7 +268,7 @@ os subtextos que se encontram no texto!!!\n" +
   wait_enter();
 }
 
-bool BuscaRabinKarp::busca(std::string texto, std::string subtexto, int d,
+bool BuscaRabinKarp::busca(string texto, string subtexto, int d,
                            int q) {
   // calculando n e m
   int n = texto.length();
@@ -292,21 +291,21 @@ bool BuscaRabinKarp::busca(std::string texto, std::string subtexto, int d,
 
   for (int s = 0; s < (n - m + 1); s++) {
     if (s % 20 == 0) {
-      std::stringstream res;
-      res << MAGENTA << std::setprecision(2) << ((float)s / (float)n * 100)
+      stringstream res;
+      res << MAGENTA << setprecision(2) << ((float)s / (float)n * 100)
           << "% do texto já foi vasculhado." << RESET;
       pretty_print(res.str(), 10);
     }
 
     if (p == t) {
       if (subtexto == texto.substr(s, m)) {
-        std::string res_final =
+        string res_final =
             "\n" + GREEN + "PARTE DO TEXTO FOI ENCONTRADO" + RESET;
         pretty_print(res_final, 20);
 
         pretty_print(
             YELLOW + "CONTEXTO -> " + MAGENTA + "..." +
-                texto.substr(std::max(0, s - 40), std::min(m + 80, n - s)) +
+                texto.substr(max(0, s - 40), min(m + 80, n - s)) +
                 "..." + RESET,
             20);
 

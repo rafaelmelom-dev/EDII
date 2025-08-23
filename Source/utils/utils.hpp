@@ -3,21 +3,22 @@
 
 
 #include <string>
+using namespace std;
 
 // Códigos de cor ANSI
-extern const std::string RESET;
-extern const std::string BLACK;
-extern const std::string RED;
-extern const std::string GREEN;
-extern const std::string YELLOW;
-extern const std::string BLUE;
-extern const std::string MAGENTA;
-extern const std::string CYAN;
-extern const std::string WHITE;
-extern const std::string BOLD;
+extern const string RESET;
+extern const string BLACK;
+extern const string RED;
+extern const string GREEN;
+extern const string YELLOW;
+extern const string BLUE;
+extern const string MAGENTA;
+extern const string CYAN;
+extern const string WHITE;
+extern const string BOLD;
 
 void clean_screen();
-void pretty_print(const std::string &text, int delay_ms);
+void pretty_print(const string &text, int delay_ms);
 void wait_enter();
 
 #endif

@@ -11,17 +11,19 @@
 #include <fcntl.h>   // For fcntl, F_SETFL, O_NONBLOCK
 #endif
 
+using namespace std;
+
 // Códigos de cor ANSI
-const std::string RESET = "\033[0m";
-const std::string BLACK = "\033[30m";
-const std::string RED = "\033[31m";
-const std::string GREEN = "\033[32m";
-const std::string YELLOW = "\033[33m";
-const std::string BLUE = "\033[34m";
-const std::string MAGENTA = "\033[35m";
-const std::string CYAN = "\033[36m";
-const std::string WHITE = "\033[37m";
-const std::string BOLD = "\033[1m";
+const string RESET = "\033[0m";
+const string BLACK = "\033[30m";
+const string RED = "\033[31m";
+const string GREEN = "\033[32m";
+const string YELLOW = "\033[33m";
+const string BLUE = "\033[34m";
+const string MAGENTA = "\033[35m";
+const string CYAN = "\033[36m";
+const string WHITE = "\033[37m";
+const string BOLD = "\033[1m";
 
 // Função para limpar a tela
 // Global original terminal settings for Linux
@@ -66,7 +68,7 @@ void clean_screen() {
 }
 
 // Função para imprimir textos na tela lentamente
-void pretty_print(const std::string &text, int delay_ms) {
+void pretty_print(const string &text, int delay_ms) {
   bool escape_code_activated = false;
   bool skip_delay = false; // New flag
 
@@ -75,7 +77,7 @@ void pretty_print(const std::string &text, int delay_ms) {
 #endif
 
   for (char c : text) {
-    std::cout << c << std::flush;
+    cout << c << flush;
 
     // Check for user input to skip delay
 #ifdef _WIN32
@@ -99,12 +101,12 @@ void pretty_print(const std::string &text, int delay_ms) {
       escape_code_activated = true;
 
     if (!escape_code_activated && !skip_delay) // Apply delay only if not skipping
-      std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
+      this_thread::sleep_for(chrono::milliseconds(delay_ms));
 
     if (escape_code_activated && c == 'm')
       escape_code_activated = false;
   }
-  std::cout << std::endl;
+  cout << endl;
 
 #ifndef _WIN32
   restore_terminal_mode(); // Restore original mode on Linux
@@ -112,6 +114,6 @@ void pretty_print(const std::string &text, int delay_ms) {
 }
 
 void wait_enter() {
-  std::cout << GREEN << "Pressione Enter para continuar..." << RESET;
-  std::cin.get();
+  cout << GREEN << "Pressione Enter para continuar..." << RESET;
+  cin.get();
 }
