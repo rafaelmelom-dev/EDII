@@ -1,0 +1,26 @@
+Atividade ED2 09/09
+Túlio Mota Lima
+Rafael Moreira de Melo
+
+INICIO
+
+FUNÇÃO FibDP(x)
+	
+	SE x <= 1 ENTÃO
+		RETORNE 0
+	FIM SE
+	
+	SE  x == 2 ENTÃO 
+		RETORNE 1 
+	FIM SE
+	
+	CRIA LISTA dp COM TAMANHO X
+	
+	PARA i DE 3 ATÉ x+3 ENTÃO 
+		dp[i] = dp[i-1] + dp[i-2]
+	FIM PARA
+	
+	RETORNE dp[x]
+	
+FIM
+	

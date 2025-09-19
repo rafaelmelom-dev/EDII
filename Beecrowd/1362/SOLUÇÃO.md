@@ -3,7 +3,7 @@ Solução do problema 1362, do site Beecrowd, utilizando o algoritmo Húngaro, u
 O problema tem o objetivo de checar se a combinação de camisas dadas conseguem se adequar a demanda dos voluntários. 
 
 Informações importantes:
-* Cada voluntário tem dois tamanhos possíveis;
+* Cada voluntário tem dois tamanho4s possíveis;
 * A quantidade de tamanhos de camisas é uniforme, por exemplo, se temos doze camisas, temos duas de cada tamanho (XS, S, M, L, XL, XXL). Consequentemente o número de camisas é múltiplo de 6;
 * 1  <= N <= 36, sendo N a quantidade de camisetas disponíveis;
 * 1 <= M <= 30, sendo M a quantidade de voluntários;

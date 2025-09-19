@@ -1,6 +1,8 @@
 #include "modulos/busca.hpp"
 #include "modulos/grafos.hpp"
 #include "modulos/otimizacao.hpp"
+#include "modulos/gulosos.hpp"
+#include "modulos/programacao_dinamica.hpp"
 #include "utils/utils.hpp"
 #include <bits/stdc++.h>
 
@@ -14,14 +16,16 @@ void menu() {
     cout << GREEN
          << "+++ História Interativa do Guia do Mochileiro dos Algoritmos +++"
          << RESET << endl;
-    cout << "[1] Busca de Dados (O guia bagunçado e a busca por Magrathea)"
+    cout << "[1] Algoritmos Gulosos (O fim do mundo em cinco minutos)" << endl;
+    cout << "[2] Programação Dinâmica (A lógica fria do vácuo)" << endl;
+    cout << "[3] Busca de Dados (O guia bagunçado e a busca por Magrathea)"
          << endl;
-    cout << "[2] Otimização de Recursos (Sussurros no Vácuo e a Tabela de "
+    cout << "[4] Otimização de Recursos (Sussurros no Vácuo e a Tabela de "
             "Dispersão Vogon)"
          << endl;
-    cout << "[3] Grafos (O Labirinto de Asteroides e a Rota para Magrathea)"
+    cout << "[5] Grafos (O Labirinto de Asteroides e a Rota para Magrathea)"
          << endl;
-    cout << "[4] Sair" << endl << endl;
+    cout << "[6] Sair" << endl << endl;
 
     cout << CYAN << "Digite a opção desejada" << RESET << endl << "> ";
     cin >> opt;
@@ -30,6 +34,60 @@ void menu() {
 
     switch (opt) {
     case 1: {
+      pretty_print(GREEN + "O fim do mundo em cinco minutos" + RESET, 20);
+
+      pretty_print("narrativa inicial", 20);
+
+      // etapa: mochila fracionaria
+      MochilaFracionaria mf;
+      // etapa: escalonamento de intervalos
+      EscalonamentoIntervalos ei;
+      // etapa: troco
+      Troco t;
+
+      mf.run();
+      cout << endl << endl;
+      ei.run();
+      cout << endl << endl;
+      t.run();
+      cout << endl << endl;
+
+      pretty_print("narrativa final", 20);
+
+      pretty_print(
+          CYAN + "Módulo de algoritmos gulosos finalizado com sucesso!!!" +
+              RESET,
+          20);
+
+      cout << endl << endl;
+
+      wait_enter();
+      break;
+    }
+    case 2: {
+      pretty_print(GREEN + "A lógica fria do vácuo" + RESET, 20);
+
+      pretty_print("narrativa inicial", 20);
+
+      // etapa: mochila 0/1
+      Mochila01 m;
+
+      m.run();
+      cout << endl << endl;
+
+      pretty_print("narrativa final", 20);
+
+      pretty_print(
+          CYAN + "Módulo de programação dinâmica finalizado com sucesso!!!" +
+              RESET,
+          20);
+
+      cout << endl << endl;
+
+      wait_enter();
+      break;
+    }
+    case 3: {
       // Narrativa geral da fase de busca
       pretty_print(
           GREEN + "O guia bagunçado e a busca por Magrathea\n\n" + RESET, 20);
@@ -75,7 +133,7 @@ nossas próximas comunicações para não sermos detectados!\".\n\n",
       wait_enter();
       break;
     }
-    case 2: {
+    case 4: {
       // Narrativa geral da fase de otimização
       pretty_print(GREEN + "Sussurros no Vazio e a Fúria Vogon\n\n" + RESET,
                    20);
@@ -119,7 +177,7 @@ paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
       wait_enter();
       break;
     }
-    case 3: {
+    case 5: {
       // Narrativa geral da fase de busca
       pretty_print(GREEN +
                        "O Labirinto de Asteroides e a Rota para Magrathea\n\n" +
@@ -151,7 +209,7 @@ paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
       // etapa: grafo - avançado
       AlgGrafos ag;
 
-      //rg.run();
+      // rg.run();
       cout << endl << endl;
 
       bg.run();
@@ -178,7 +236,7 @@ paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
       wait_enter();
       break;
     }
-    case 4:
+    case 6:
       exit(0);
     default:
       cout << "Opção inválida. Tente novamente." << endl;
