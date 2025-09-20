@@ -1,7 +1,7 @@
 #include "modulos/busca.hpp"
 #include "modulos/grafos.hpp"
-#include "modulos/otimizacao.hpp"
 #include "modulos/gulosos.hpp"
+#include "modulos/otimizacao.hpp"
 #include "modulos/programacao_dinamica.hpp"
 #include "utils/utils.hpp"
 #include <bits/stdc++.h>
@@ -34,9 +34,21 @@ void menu() {
 
     switch (opt) {
     case 1: {
-      pretty_print(GREEN + "O fim do mundo em cinco minutos" + RESET, 20);
+      pretty_print(GREEN + "O fim do mundo em cinco minutos\n\n" + RESET, 20);
 
-      pretty_print("narrativa inicial", 20);
+      pretty_print(
+          "Você está em sua casa, tranquilamente tomando uma xícara de chá, "
+          "quando seu excêntrico amigo, Ford Prefect, arromba a porta. Ele "
+          "está em pânico. \"Rápido! Pegue sua toalha! Os Vogons estão "
+          "vindo!\", ele grita, apontando para o céu, onde uma gigantesca "
+          "frota de naves amarelas paira ameaçadoramente. Um anúncio "
+          "burocrático e ininteligível ecoa pela vizinhança, confirmando que a "
+          "Terra será demolida para a construção de uma via expressa "
+          "hiperespacial.\n\nO tempo é curtíssimo. Você precisa tomar decisões "
+          "rápidas e eficientes para sobreviver. Cada segundo conta, e não há "
+          "tempo para planejar a solução perfeita – apenas a que funciona "
+          "agora.\n\n",
+          20);
 
       // etapa: mochila fracionaria
       MochilaFracionaria mf;
@@ -52,7 +64,11 @@ void menu() {
       t.run();
       cout << endl << endl;
 
-      pretty_print("narrativa final", 20);
+      pretty_print(
+          "Ao conseguir o peixe Babel, vocês o inserem no ouvido. Segundos "
+          "depois, um raio demolidor vaporiza sua rua. Vocês foram "
+          "capturados.\n\n",
+          20);
 
       pretty_print(
           CYAN + "Módulo de algoritmos gulosos finalizado com sucesso!!!" +
@@ -65,9 +81,23 @@ void menu() {
       break;
     }
     case 2: {
-      pretty_print(GREEN + "A lógica fria do vácuo" + RESET, 20);
+      pretty_print(GREEN + "A lógica fria do vácuo\n\n" + RESET, 20);
 
-      pretty_print("narrativa inicial", 20);
+      pretty_print(
+          "Vocês estão em uma cela úmida e escura na nave Vogon. O guarda, uma "
+          "criatura horrenda e burocrática chamada Prostetnic Vogon Jeltz, "
+          "anuncia seu destino: serem ejetados no vácuo do espaço. No entanto, "
+          "ele oferece um \"desafio de lógica\" como uma forma sádica de "
+          "entretenimento.\n\n\"De acordo com o regulamento 37-B, subseção 9, "
+          "prisioneiros podem receber um kit de sobrevivência. No entanto, o "
+          "compartimento de carga do kit é... eficiente\", ele diz com um "
+          "sorriso cruel. \"Vocês devem escolher a combinação de itens que "
+          "maximize seu valor de sobrevivência. Os itens são indivisíveis. "
+          "Escolham errado, e o vácuo parecerá um alívio.\"\n\nDiferente do "
+          "pânico "
+          "na Terra, aqui a decisão é calculada. Uma escolha errada significa "
+          "o fim. A solução precisa ser perfeita.\n\n",
+          20);
 
       // etapa: mochila 0/1
       Mochila01 m;
@@ -75,7 +105,19 @@ void menu() {
       m.run();
       cout << endl << endl;
 
-      pretty_print("narrativa final", 20);
+      pretty_print(
+          "Após sua implementação encontrar a combinação ótima (por exemplo: "
+          "Gerador de Oxigênio, Nutri-pasta, Kit de Reparo e o Sinalizador), "
+          "você arruma o kit. O guarda Vogon, impressionado contra a sua "
+          "vontade, os arrasta para a câmara de ejeção. A porta se abre, e "
+          "vocês são lançados na escuridão fria. O kit funciona! O oxigênio "
+          "flui, o sinalizador pisca... mas o tempo está se esgotando. Quando "
+          "tudo parece perdido, uma luz dourada brilhante e uma "
+          "improbabilidade estatística de dois elevado a infinito para um "
+          "acontece. Uma nave surge do nada e os resgata.\n\nVocês estão a "
+          "bordo da Coração de Ouro, e a sua aventura está prestes a ficar "
+          "muito, muito mais estranha.\n\n",
+          20);
 
       pretty_print(
           CYAN + "Módulo de programação dinâmica finalizado com sucesso!!!" +
@@ -209,7 +251,7 @@ paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
       // etapa: grafo - avançado
       AlgGrafos ag;
 
-      // rg.run();
+      rg.run();
       cout << endl << endl;
 
       bg.run();
@@ -243,7 +285,7 @@ paradas para reabastecer... e pegar aquelas toalhas.\"\n\n",
 
       wait_enter();
     }
-  } while (opt != 4);
+  } while (opt != 6);
 }
 
 int main(int argc, char **argv) {

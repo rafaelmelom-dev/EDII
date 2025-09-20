@@ -477,6 +477,19 @@ void AlgGrafos::colorir() {
   grafo["D"] = {"A", "C", "E"};
   grafo["E"] = {"D"};
 
+  string texto = "\nRepresentação do grafo de zonas para coloração:\n";
+  for (const auto &entry : grafo) {
+    texto += "  " + entry.first + " -> ";
+    for (size_t i = 0; i < entry.second.size(); ++i) {
+      texto += entry.second[i];
+      if (i < entry.second.size() - 1) {
+        texto += ", ";
+      }
+    }
+    texto += "\n";
+  }
+  pretty_print(GREEN + texto + RESET, 20);
+
   map<string, int> graus;
   for (const auto &p : grafo) {
     graus[p.first] = p.second.size();
@@ -551,6 +564,19 @@ void AlgGrafos::ordTop() {
   grafo_top["Relé_Gama"] = {"Relé_Delta"};
   grafo_top["Relé_Delta"] = {"Relé_Épsilon"};
   grafo_top["Relé_Épsilon"] = {};
+
+  string texto = "\nRepresentação do grafo de relés para ordenação topológica:\n";
+  for (const auto &entry : grafo_top) {
+    texto += "  " + entry.first + " -> ";
+    for (size_t i = 0; i < entry.second.size(); ++i) {
+      texto += entry.second[i];
+      if (i < entry.second.size() - 1) {
+        texto += ", ";
+      }
+    }
+    texto += "\n";
+  }
+  pretty_print(GREEN + texto + RESET, 20);
 
   set<string> vertices;
   for (const auto &p : grafo_top) {
@@ -688,12 +714,12 @@ void AlgGrafos::agm() {
     }
   }
 
-  string result_str_ini = "\nGrafo normal: \n";
+  string texto = "\nGrafo normal: \n";
   for (const auto &aresta : arestas) {
-    result_str_ini += "  (" + get<1>(aresta) + ", " + get<2>(aresta) + ", " +
-                      to_string(get<0>(aresta)) + ")\n";
+    texto += "  (" + get<1>(aresta) + ", " + get<2>(aresta) + ", " +
+              to_string(get<0>(aresta)) + ")\n";
   }
-  result_str_ini += "\n";
+  texto += "\n";
 
   string result_str = "\nÁrvore Geradora Mínima (Kruskal): \n";
   for (const auto &aresta : mst_arestas) {
@@ -703,7 +729,7 @@ void AlgGrafos::agm() {
   result_str +=
       "\nCusto total da MST: " + to_string(mst_custo_total) + " parsecs\n";
 
-  pretty_print(GREEN + result_str_ini + RESET, 20);
+  pretty_print(GREEN + texto + RESET, 20);
   pretty_print(GREEN + result_str + RESET, 20);
   cout << endl;
 }
